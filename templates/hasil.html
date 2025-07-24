@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hasil Identifikasi BLAST</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <style>
+        /* Anda bisa menambahkan custom style di sini jika diperlukan */
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+    </style>
+</head>
+<body class="bg-gray-100 flex items-center justify-center min-h-screen p-4 sm:p-6 lg:p-8">
+
+    <div class="w-full max-w-2xl mx-auto">
+        <div class="bg-white shadow-2xl rounded-2xl p-6 sm:p-10 text-center">
+            
+            {% if hasil %}
+            <!-- Tampilan jika hasil ditemukan -->
+            <div class="mb-6">
+                <i class="fas fa-dna text-5xl text-blue-500"></i>
+                <h1 class="text-3xl sm:text-4xl font-bold text-gray-800 mt-4">Identifikasi Berhasil!</h1>
+                <p class="text-gray-500 mt-2">Berikut adalah hasil teratas dari analisis BLAST.</p>
+            </div>
+
+            <div class="bg-gray-50 border border-gray-200 rounded-lg p-6 text-left space-y-4">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center">
+                    <h2 class="text-lg font-semibold text-gray-700">Spesies Teridentifikasi:</h2>
+                    <p class="text-xl font-bold text-green-600 mt-1 sm:mt-0 text-right">{{ hasil.species }}</p>
+                </div>
+                <hr>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-4">
+                    <div>
+                        <h3 class="font-semibold text-gray-600">Accession Number</h3>
+                        <p class="text-gray-800 font-mono">{{ hasil.accession }}</p>
+                    </div>
+                    <div>
+                        <h3 class="font-semibold text-gray-600">Score</h3>
+                        <p class="text-gray-800">{{ hasil.score }}</p>
+                    </div>
+                    <div>
+                        <h3 class="font-semibold text-gray-600">E-value</h3>
+                        <p class="text-gray-800">{{ "%.2e"|format(hasil.e_value) }}</p>
+                    </div>
+                    <div>
+                        <h3 class="font-semibold text-gray-600">Tingkat Identitas</h3>
+                        <p class="text-gray-800 font-bold">{{ "%.2f"|format(hasil.identity) }}%</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-8">
+                <a href="{{ url_for('upload_file') }}" class="inline-block bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 px-6 rounded-lg transition duration-300">
+                    <i class="fas fa-redo-alt mr-2"></i>Coba Lagi dengan Sekuens Lain
+                </a>
+            </div>
+
+            {% else %}
+            <!-- Tampilan jika hasil TIDAK ditemukan atau terjadi error -->
+            <div class="mb-6">
+                <i class="fas fa-exclamation-triangle text-5xl text-red-500"></i>
+                <h1 class="text-3xl sm:text-4xl font-bold text-gray-800 mt-4">Gagal Mengidentifikasi</h1>
+                <p class="text-gray-500 mt-2">Tidak ditemukan kecocokan yang signifikan di database atau terjadi kesalahan saat memproses data Anda.</p>
+            </div>
+
+            <div class="mt-8">
+                 <a href="{{ url_for('upload_file') }}" class="inline-block bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 px-6 rounded-lg transition duration-300">
+                    <i class="fas fa-arrow-left mr-2"></i>Kembali ke Halaman Utama
+                </a>
+            </div>
+            {% endif %}
+
+        </div>
+    </div>
+
+</body>
+</html>
